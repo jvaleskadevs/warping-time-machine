@@ -13,6 +13,7 @@ import {
   WTM_FIXED_DEPOSIT_AMOUNT
 } from '../../../../config';
 import { getFirstTokenOf } from '../../../../lib/getFirstTokenOf'; 
+import { getFarcasterAddress } from '../../../../lib/getFarcasterAddress'; 
 import { ownerOf } from '../../../../lib/ownerOf'; 
 import { Errors } from '../../../../errors';
 
@@ -27,8 +28,8 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   const fid: number | undefined = message?.interactor?.fid || undefined;
   console.log(fid);
   if (!fid) return new NextResponse(Errors.NoAddress);
-  const address: Address | undefined = message?.interactor?.custody_address as Address || undefined;
-  //const address: Address | undefined = await getFarcasterAddress(fid);
+  //const address: Address | undefined = message?.interactor?.custody_address as Address || undefined;
+  const address: Address | undefined = await getFarcasterAddress(fid);
   console.log(address);  
   if (!address) return new NextResponse(Errors.NoAddress);
   
