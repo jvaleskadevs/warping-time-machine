@@ -8,14 +8,14 @@ export default function FrameHomePage() {
         {
           action: 'tx',
           label: 'Join',
-          target: `${SITE_URL}/api/frame/tx/join`,
-          postUrl: `${SITE_URL}/api/frame/tx/success-join`,
+          target: `${SITE_URL}/api/frames/tx/join`,
+          postUrl: `${SITE_URL}/api/frames/tx/success-join`,
         },
         {
           action: 'tx',
           label: 'Leave',
-          target: `${SITE_URL}/api/frame/tx/leave`,
-          postUrl: `${SITE_URL}/api/frame/tx/success-leave`,
+          target: `${SITE_URL}/api/frames/tx/leave`,
+          postUrl: `${SITE_URL}/api/frames/tx/success-leave`,
         },
         {
           action: 'link',
