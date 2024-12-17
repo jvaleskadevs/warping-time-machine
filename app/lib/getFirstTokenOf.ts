@@ -1,5 +1,5 @@
 import { Address, createPublicClient, http } from 'viem';
-import { CHAIN, WTM_ADDRESS, WTM_ABI } from '../config';
+import { CHAIN, DFBC_ADDRESS, DFBC_ABI } from '../config';
 
 const publicClient = createPublicClient({
   chain: CHAIN,
@@ -10,8 +10,8 @@ export const getFirstTokenOf = async (address: Address): Promise<bigint | undefi
   if (!address) return undefined;
   
   const data = await publicClient.readContract({
-    address: WTM_ADDRESS,
-    abi: WTM_ABI,
+    address: DFBC_ADDRESS,
+    abi: DFBC_ABI,
     functionName: "tokenOfOwnerByIndex",
     args: [address, '0']
   });
