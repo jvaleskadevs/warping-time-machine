@@ -22,16 +22,16 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   const { isValid, message } = await getFrameMessage(frameRequest, {
     neynarApiKey: process.env.NEYNAR_API_KEY ?? 'ONCHAIN_KIT'
   });
-  if (!isValid) return new NextResponse(Errors.NoValidMessage);
+  if (!isValid) return NextResponse.json({ message: Errors.NoValidMessage }, { status: 400 });
   
   // get the fid and the custody address of the caller
   const fid: number | undefined = message?.interactor?.fid || undefined;
   console.log(fid);
-  if (!fid) return new NextResponse(Errors.NoAddress);
+  if (!fid) return NextResponse.json({ message: Errors.NoAddress }, { status: 400 });
   //const address: Address | undefined = message?.interactor?.custody_address as Address || undefined;
   const address: Address | undefined = await getFarcasterAddress(fid);
   console.log(address);  
-  if (!address) return new NextResponse(Errors.NoAddress);
+  if (!address) return NextResponse.json({ message: Errors.NoAddress }, { status: 400 });
   
   const text = message?.input || '';  
   console.log(text);
@@ -39,12 +39,12 @@ async function getResponse(req: NextRequest): Promise<NextResponse> {
   let tokenId;
   if (text) {
     tokenId = parseInt(text);
-    if ((await ownerOf(tokenId)) !== address) return new NextResponse(Errors.NoDFBC);
+    if ((await ownerOf(tokenId))?.toLowerCase() !== address) return NextResponse.json({ message: Errors.NoDFBC }, { status: 400 });
   } else {
     tokenId = await getFirstTokenOf(address);  
   }
 
-  if (!tokenId) return new NextResponse(Errors.NoDFBC);
+  if (!tokenId) return NextResponse.json({ message: Errors.NoDFBC }, { status: 400 });
   
   // create transaction data for calling the deposit function
   const data = encodeFunctionData({
