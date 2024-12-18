@@ -9,12 +9,18 @@ const publicClient = createPublicClient({
 export const getFirstTokenOf = async (address: Address): Promise<bigint | undefined> => {
   if (!address) return undefined;
   
-  const data = await publicClient.readContract({
-    address: DFBC_ADDRESS,
-    abi: DFBC_ABI,
-    functionName: "tokenOfOwnerByIndex",
-    args: [address, '0']
-  });
+  try {
+    const data = await publicClient.readContract({
+      address: DFBC_ADDRESS,
+      abi: DFBC_ABI,
+      functionName: "tokenOfOwnerByIndex",
+      args: [address, '0']
+    });
+    
+    return data as bigint ?? undefined;
+  } catch (err) {
+    console.log(err);
+  }
   
-  return data as bigint ?? undefined;
+  return undefined;
 }
